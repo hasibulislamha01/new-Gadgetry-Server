@@ -1,16 +1,8 @@
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 require('dotenv').config();
-const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
-
-// CORS Configuration
-app.use(cors({
-    origin: 'https://gadgetry-7f6df.web.app',  // Set your frontend origin here
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
 
 app.use(express.json());
 
@@ -32,6 +24,10 @@ async function run() {
         const gadgetsCollection = client.db('Gadgetry').collection('gadgetsCollection');
 
         app.get('/gadgets', async (req, res) => {
+            res.setHeader('Access-Control-Allow-Origin', 'https://gadgetry-7f6df.web.app');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, PUT, PATCH, POST, DELETE');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
             const result = await gadgetsCollection.find().toArray();
             res.send(result);
         });
@@ -45,6 +41,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://gadgetry-7f6df.web.app');
     res.send('Hello World!');
 });
 
