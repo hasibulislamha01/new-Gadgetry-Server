@@ -56,9 +56,9 @@ async function run() {
 
 
         app.get('/gadgets', async (req, res) => {
-            // const result = await gadgetsCollection.find().toArray()
-            // res.send(result)
-            res.json({ message: 'CORS headers should be here!' });
+            const result = await gadgetsCollection.find().toArray()
+            res.send(result)
+            // res.json({ message: 'CORS headers should be here!' });
         })
 
 
