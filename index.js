@@ -6,7 +6,10 @@ const app = express()
 const port = process.env.PORT || 5000;
 
 
-app.use(cors())
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+}))
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'https://gadgetry-7f6df.web.app');
@@ -53,8 +56,9 @@ async function run() {
 
 
         app.get('/gadgets', async (req, res) => {
-            const result = await gadgetsCollection.find().toArray()
-            res.send(result)
+            // const result = await gadgetsCollection.find().toArray()
+            // res.send(result)
+            res.json({ message: 'CORS headers should be here!' });
         })
 
 
