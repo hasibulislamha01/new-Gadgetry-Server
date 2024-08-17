@@ -2,8 +2,16 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 require('dotenv').config();
 const app = express();
+const cors = require('cors')
 const port = process.env.PORT || 5000;
 
+
+// Use CORS middleware
+app.use(cors({
+    origin: '*', // Adjust this to specify which origins are allowed
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 const user = process.env.DB_USER;
