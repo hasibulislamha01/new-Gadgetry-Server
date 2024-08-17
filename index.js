@@ -6,9 +6,9 @@ const cors = require('cors')
 const port = process.env.PORT || 5000;
 
 
-// Use CORS middleware
+
 app.use(cors({
-    origin: '*', // Adjust this to specify which origins are allowed
+    origin: '*', 
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -32,10 +32,6 @@ async function run() {
         const gadgetsCollection = client.db('Gadgetry').collection('gadgetsCollection');
 
         app.get('/gadgets', async (req, res) => {
-            res.setHeader('Access-Control-Allow-Origin', 'https://gadgetry-7f6df.web.app');
-            res.setHeader('Access-Control-Allow-Methods', 'GET, HEAD, PUT, PATCH, POST, DELETE');
-            res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
             const result = await gadgetsCollection.find().toArray();
             res.send(result);
         });
@@ -49,8 +45,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://gadgetry-7f6df.web.app');
-    res.send('Hello World!');
+    res.send('Gadgetry is running!');
 });
 
 app.listen(port, () => {
