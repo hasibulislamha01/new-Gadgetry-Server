@@ -1,41 +1,24 @@
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const express = require('express')
-require('dotenv').config()
+const express = require('express');
+require('dotenv').config();
 const cors = require('cors');
-const app = express()
+const app = express();
 const port = process.env.PORT || 5000;
 
-
+// CORS Configuration
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-}))
+    origin: 'https://gadgetry-7f6df.web.app',  // Set your frontend origin here
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'https://gadgetry-7f6df.web.app');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+app.use(express.json());
 
-    // Handle preflight requests (OPTIONS)
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
-
-    next();
-});
-
-app.use(express.json())
-
-const user = process.env.DB_USER
-const password = process.env.DB_PASS
-
-
+const user = process.env.DB_USER;
+const password = process.env.DB_PASS;
 
 const uri = `mongodb+srv://${user}:${password}@cluster0.75ieoxq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-// console.log(uri)
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
     serverApi: {
         version: ServerApiVersion.v1,
@@ -44,53 +27,27 @@ const client = new MongoClient(uri, {
     }
 });
 
-
 async function run() {
     try {
-        // Connect the client to the server	(optional starting in v4.7)
-        // await client.connect();
-
-
-        const gadgetsCollection = client.db('Gadgetry').collection('gadgetsCollection')
-
-
+        const gadgetsCollection = client.db('Gadgetry').collection('gadgetsCollection');
 
         app.get('/gadgets', async (req, res) => {
-            const result = await gadgetsCollection.find().toArray()
-            res.send(result)
-            // res.json({ message: 'CORS headers should be here!' });
-        })
+            const result = await gadgetsCollection.find().toArray();
+            res.send(result);
+        });
 
-
-
-
-
-
-
-
-        // Send a ping to confirm a successful connection
-        // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
-        // Ensures that the client will close when you finish/error
+        // Uncomment the following line if you want to close the client after every run
         // await client.close();
     }
 }
 run().catch(console.dir);
 
-
-
-
-// middleware
-app.use(cors());
-app.use(express.json())
-
-
 app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
-
+    res.send('Hello World!');
+});
 
 app.listen(port, () => {
-    console.log(`travel site is running on port ${port}`)
-})
+    console.log(`Gadgetry backend is running on port ${port}`);
+});
