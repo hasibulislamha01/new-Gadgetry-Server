@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 
 
 app.use(cors({
-    origin: '*', 
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -35,6 +35,22 @@ async function run() {
             const result = await gadgetsCollection.find().toArray();
             res.send(result);
         });
+
+        app.get('/things', async (req, res) => {
+            const page = parseInt(req?.query.page)
+            const gadgetsPerPage = 9
+            const startingIndex = (page - 1) * gadgetsPerPage;
+            const endingIndex = startingIndex + gadgetsPerPage;
+            const gadgets = await gadgetsCollection.find().toArray()
+            const noOfItems = gadgets?.length
+            if(page) {
+                const pagedItems = gadgets?.slice(startingIndex, endingIndex)
+                res.send({pagedItems, noOfItems})
+            }
+            else{
+                res.send(gadgets)
+            }
+        })
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
