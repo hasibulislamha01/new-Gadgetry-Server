@@ -8,9 +8,11 @@ const port = process.env.PORT || 5000;
 
 
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    origin: [
+        "http://localhost:5173",
+        "https://gadgetry-7f6df.web.app",
+        "https://gadgetry-7f6df.firebaseapp.com"
+    ]
 }));
 app.use(express.json());
 
